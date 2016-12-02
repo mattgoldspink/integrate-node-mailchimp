@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Sign Up</title>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.1.25/spectre.min.css" rel="stylesheet" crossorigin="anonymous">
+    </head>
+    <body>
+        <form action="/signup" method="POST" class="centered mt-10 ml-10 mr-10">
+            <div class="form-group">
+                <label class="form-label" for="firstname">First Name</label>
+                <input class="form-input" type="text" name="firstname" id="firstname"/>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="lastname">Last Name</label>
+                <input class="form-input" type="text" name="lastname" id="lastname"/>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="email">Email</label>
+                <input class="form-input" type="text" name="email" id="email"/>
+            </div>
+            <input type="submit" class="btn btn-primary" value="Submit"/>
+        </form>
+    </body>
+</html>

@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Pick A List From Mailchimp</title>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.1.25/spectre.min.css" rel="stylesheet" crossorigin="anonymous">
+    </head>
+    <body>
+        <h1>Pick a List</h1>
+        <p>Choose which list to sync your Members from:
+            <select id="lists">
+                <option value="null"></option>
+            </select>
+        </p>
+        <h2>Members</h2>
+        <table id="members" class="table">
+            <thead>
+                <th>Email</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+        <script>
+            $(function() {
+                var queryParams = new URLSearchParams(location.search.slice(1));
+                var mailingListSelect = $('#lists');
+                // 1. make AJAX call for the list of Lists
+                $.get('/mailchimp/lists?email=' + queryParams.get('email'), function(data) {
+                    // 2. insert lists into DOM
+                   data.forEach(function(mailchimpList) {
+                        mailingListSelect.append('<option value="' + mailchimpList.id + '">'+ mailchimpList.name + '(' + mailchimpList.stats.member_count  + ' Members)' + '</option>');
+                    });
+                });
+
+                mailingListSelect.change(function() {
+                    // 3. when an option is select then download the list of members
+                    $.get('/mailchimp/list/members/' + mailingListSelect.val() + '?email=' + queryParams.get('email') , function(data) {
+                        var tbodyEl = $('#members tbody');
+                        tbodyEl.html('');
+                        data.forEach(function(member) {
+                            tbodyEl.append('<tr><td>' + member.email_address + '</td><td>' + member.merge_fields.FNAME + '</td><td>' + member.merge_fields.LNAME + '</td></tr>');
+                        });
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>
